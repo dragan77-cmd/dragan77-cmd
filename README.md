@@ -1,40 +1,58 @@
-- 👋 Hi, I’m @dragan77-cmd
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-
-<!---
-dragan77-cmd/dragan77-cmd is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
----> import pygame
+import pygame
 import random
 
-# Koden för Tetris-spelet går här
+# Definiera färger
+SVART = (0, 0, 0)
+VIT = (255, 255, 255)
+CYAN = (0, 255, 255)
+GUL = (255, 255, 0)
+LILA = (128, 0, 128)
+GRÖN = (0, 255, 0)
+RÖD = (255, 0, 0)
+BLÅ = (0, 0, 255)
+ORANGE = (255, 165, 0)
 
-def main():
-    pygame.init()
-    fönster = pygame.display.set_mode((FÖNSTER_BREDD, FÖNSTER_HÖJD))
-    pygame.display.set_caption("Tetris")
+# Definiera storlek på fönster och rutnät
+RUTNÄT_STORLEK = 25
+RUTNÄT_BREDD = 10
+RUTNÄT_HÖJD = 20
+FÖNSTER_BREDD = RUTNÄT_BREDD * RUTNÄT_STORLEK
+FÖNSTER_HÖJD = RUTNÄT_HÖJD * RUTNÄT_STORLEK
 
-    klocka = pygame.time.Clock()
-
-    rutnät = skapa_rutnät()
-
-    kör = True
-    while kör:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                kör = False
-
-        rita_rutnät(fönster, rutnät)
-        pygame.display.update()
-        klocka.tick(30)
-
-    pygame.quit()
+# Definiera formerna för tetrominonerna
+FORMER = [
+    [[1, 1, 1, 1]],  # I-formen
+    [[1, 1], [1, 1]],  # O-formen
+    [[1, 1, 0], [0, 1, 1]],  # S-formen
+    [[0, 1, 1], [1, 1, 0]],  # Z-formen
+    [[1, 1, 1], [0, 1, 0]],  # L-formen
+    [[1, 1, 1], [1, 0, 0]],  # J-formen
+    [[1, 1, 1], [0, 0, 1]]  # T-formen
+]
 
 
-if __name__ == "__main__":
-    main()
+def skapa_rutnät():
+    rutnät = [[SVART] * RUTNÄT_BREDD for _ in range(RUTNÄT_HÖJD)]
+    return rutnät
 
+
+def rita_rutnät(fönster, rutnät):
+    for y in range(len(rutnät)):
+        for x in range(len(rutnät[y])):
+            pygame.draw.rect(fönster, rutnät[y][x], (x * RUTNÄT_STORLEK, y * RUTNÄT_STORLEK, RUTNÄT_STORLEK, RUTNÄT_STORLEK))
+    pygame.draw.rect(fönster, VIT, (0, 0, FÖNSTER_BREDD, FÖNSTER_HÖJD), 5)
+
+
+def placera_tetromino(rutnät, tetromino, position):
+    for y in range(len(tetromino)):
+        for x in range(len(tetromino[y])):
+            if tetromino[y][x] == 1:
+                rutnät[position[1] + y][position[0] + x] = tetromino_färg
+
+
+def ta_bort_tetromino(rutnät, tetromino, position):
+    for y in range(len(tetromino)):
+        for x in range(len(tetromino[y])):
+            if tetromino[y][x] == 1:
+                rutnät[position[1] + y][position[0] + x]
 
